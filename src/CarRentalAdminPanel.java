@@ -48,7 +48,7 @@ public class CarRentalAdminPanel {
     private static DefaultTableModel tableModel;
 
     public static void main(String[] args) {
-        // Initialize the GUI
+
         SwingUtilities.invokeLater(CarRentalAdminPanel::createAndShowGUI);
     }
 
@@ -91,7 +91,7 @@ public class CarRentalAdminPanel {
         dialog.setSize(400, 400);
         dialog.setLayout(new GridLayout(7, 2)); // 7 satır ve 2 sütun olacak
 
-        // Input fields
+
         JTextField idField = new JTextField();
         JTextField modelField = new JTextField();
         JTextField brandField = new JTextField();
@@ -99,7 +99,7 @@ public class CarRentalAdminPanel {
         JTextField fuelTypeField = new JTextField();
         JTextField rentalDateField = new JTextField(); // Kiralanma tarihi için JTextField
 
-        // Add labels and fields to dialog
+
         dialog.add(new JLabel("Car ID:"));
         dialog.add(idField);
         dialog.add(new JLabel("Model:"));
@@ -113,13 +113,13 @@ public class CarRentalAdminPanel {
         dialog.add(new JLabel("Rental Date (yyyy-MM-dd):"));
         dialog.add(rentalDateField);
 
-        // Add buttons
+
         JButton saveButton = new JButton("Save");
         JButton cancelButton = new JButton("Cancel");
         dialog.add(saveButton);
         dialog.add(cancelButton);
 
-        // Save button functionality
+
         saveButton.addActionListener(e -> {
             try {
                 String id = idField.getText().trim();
@@ -129,7 +129,7 @@ public class CarRentalAdminPanel {
                 String fuelType = fuelTypeField.getText().trim();
                 String rentalDateString = rentalDateField.getText().trim();
 
-                // Tarih formatını kontrol et
+
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Date rentalDate = null;
                 try {
@@ -147,7 +147,7 @@ public class CarRentalAdminPanel {
             }
         });
 
-        // Cancel button functionality
+
         cancelButton.addActionListener(e -> dialog.dispose());
 
         dialog.setVisible(true);

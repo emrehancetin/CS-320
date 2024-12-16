@@ -27,29 +27,17 @@ public class CarRentalUserPanel {
             this.rentalDate = rentalDate;
         }
 
-        public String getId() {
-            return id;
-        }
+        public String getId() { return id; }
 
-        public String getModel() {
-            return model;
-        }
+        public String getModel() { return model; }
 
-        public String getBrand() {
-            return brand;
-        }
+        public String getBrand() { return brand; }
 
-        public double getPrice() {
-            return price;
-        }
+        public double getPrice() { return price; }
 
-        public String getFuelType() {
-            return fuelType;
-        }
+        public String getFuelType() { return fuelType; }
 
-        public Date getRentalDate() {
-            return rentalDate;
-        }
+        public Date getRentalDate() { return rentalDate; }
 
         public String getFormattedRentalDate() {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -83,12 +71,16 @@ public class CarRentalUserPanel {
         buttonPanel.setLayout(new FlowLayout());
 
         JButton filterButton = new JButton("Filter Cars");
+        JButton clearFilterButton = new JButton("Clear All Filters");
         JButton rentButton = new JButton("Rent Car");
         buttonPanel.add(filterButton);
+        buttonPanel.add(clearFilterButton);
         buttonPanel.add(rentButton);
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
         filterButton.addActionListener(e -> openFilterDialog(frame));
+
+        clearFilterButton.addActionListener(e -> clearAllFilters());
 
         rentButton.addActionListener(e -> rentSelectedCar(carTable));
 
@@ -150,9 +142,13 @@ public class CarRentalUserPanel {
         dialog.setVisible(true);
     }
 
+    private static void clearAllFilters() {
+        refreshTable(carList);
+    }
+
     private static void rentSelectedCar(JTable carTable) {
-        if (hasRentedCar){
-            JOptionPane.showMessageDialog(carTable, "You can only rent one car at a time.","Error", JOptionPane.WARNING_MESSAGE);
+        if (hasRentedCar) {
+            JOptionPane.showMessageDialog(carTable, "You can only rent one car at a time.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -174,6 +170,15 @@ public class CarRentalUserPanel {
             carList.add(new Car("1", "S Class", "Mercedes", 79357.99, "Diesel", sdf.parse("2024-12-01")));
             carList.add(new Car("2", "Civic", "Honda", 24971.99, "Gasoline", sdf.parse("2024-11-20")));
             carList.add(new Car("3", "Corolla", "Toyota", 1946.99, "Gasoline", sdf.parse("2024-10-15")));
+            carList.add(new Car("4", "Model S", "Tesla", 85499.99, "Electric", sdf.parse("2024-08-10")));
+            carList.add(new Car("5", "Mustang", "Ford", 55000.00, "Gasoline", sdf.parse("2024-09-05")));
+            carList.add(new Car("6", "Cayenne", "Porsche", 125000.00, "Diesel", sdf.parse("2024-07-18")));
+            carList.add(new Car("7", "A8", "Audi", 89000.00, "Diesel", sdf.parse("2024-06-12")));
+            carList.add(new Car("8", "3 Series", "BMW", 45000.00, "Gasoline", sdf.parse("2024-05-23")));
+            carList.add(new Car("9", "Prius", "Toyota", 30000.00, "Hybrid", sdf.parse("2024-04-15")));
+            carList.add(new Car("10", "Leaf", "Nissan", 28000.00, "Electric", sdf.parse("2024-03-20")));
+            carList.add(new Car("11", "5 Series", "BMW", 90000.00, "Gasoline", sdf.parse("2024-04-23")));
+
         } catch (Exception e) {
             e.printStackTrace();
         }

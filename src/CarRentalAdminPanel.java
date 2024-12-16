@@ -47,11 +47,6 @@ public class CarRentalAdminPanel {
     private static List<Car> carList = new ArrayList<>();
     private static DefaultTableModel tableModel;
 
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(CarRentalAdminPanel::createAndShowGUI);
-    }
-
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("Car Rental Admin Panel");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

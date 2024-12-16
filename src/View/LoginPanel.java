@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import Controller.LoginController;
 
 public class LoginPanel extends JPanel {
 
@@ -44,7 +45,12 @@ public class LoginPanel extends JPanel {
         JButton loginButton = new JButton("Log In");
         loginButton.setBackground(Color.BLACK);
         loginButton.setForeground(Color.WHITE);
-        loginButton.addActionListener(new LoginButton());
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buttonClicked(userfield.getText(), passwordfield.getText());
+            }
+        });
 
         centerpanel.add(usernamepanel);
         centerpanel.add(userfield);
@@ -69,6 +75,6 @@ public class LoginPanel extends JPanel {
     }
 
     public void buttonClicked(String username, String password){
-
+        LoginController.trylogin(username, password);
     }
 }

@@ -1,4 +1,5 @@
 package Controller;
+import Panel.CarRentalUserPanel;
 
 import javax.swing.*;
 
@@ -16,5 +17,18 @@ public class LoginController {
 //            return false;
 //        }
         return false;
+    }
+
+    public static void trylogin(String username, String password){
+        if(username.equals("Eren") && password.equals("blackstone")){
+            CarRentalUserPanel.start();
+        }else{
+            JOptionPane.showMessageDialog(
+            null,
+                "Invalid credentials!",
+                "Info",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        }
     }
 }

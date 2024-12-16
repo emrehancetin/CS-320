@@ -27,17 +27,29 @@ public class CarRentalUserPanel {
             this.rentalDate = rentalDate;
         }
 
-        public String getId() { return id; }
+        public String getId() {
+            return id;
+        }
 
-        public String getModel() { return model; }
+        public String getModel() {
+            return model;
+        }
 
-        public String getBrand() { return brand; }
+        public String getBrand() {
+            return brand;
+        }
 
-        public double getPrice() { return price; }
+        public double getPrice() {
+            return price;
+        }
 
-        public String getFuelType() { return fuelType; }
+        public String getFuelType() {
+            return fuelType;
+        }
 
-        public Date getRentalDate() { return rentalDate; }
+        public Date getRentalDate() {
+            return rentalDate;
+        }
 
         public String getFormattedRentalDate() {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -62,7 +74,13 @@ public class CarRentalUserPanel {
         frame.setLayout(new BorderLayout());
 
         String[] columnNames = {"Car ID", "Model", "Brand", "Price", "Fuel Type", "Rental Date"};
-        tableModel = new DefaultTableModel(columnNames, 0);
+
+        tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         JTable carTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(carTable);
         frame.add(scrollPane, BorderLayout.CENTER);
@@ -178,7 +196,8 @@ public class CarRentalUserPanel {
             carList.add(new Car("9", "Prius", "Toyota", 30000.00, "Hybrid", sdf.parse("2024-04-15")));
             carList.add(new Car("10", "Leaf", "Nissan", 28000.00, "Electric", sdf.parse("2024-03-20")));
             carList.add(new Car("11", "5 Series", "BMW", 90000.00, "Gasoline", sdf.parse("2024-04-23")));
-
+            carList.add(new Car("12", "T10X V2", "TOGG", 50000.00, "Electric", sdf.parse("2024-05-20")));
+            carList.add(new Car("13", "911 GT3 RS", "Porsche", 225000.00, "Gasoline", sdf.parse("2024-06-22")));
         } catch (Exception e) {
             e.printStackTrace();
         }

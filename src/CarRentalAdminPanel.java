@@ -15,7 +15,7 @@ public class CarRentalAdminPanel {
         private String brand;
         private double price;
         private String fuelType;
-        private Date rentalDate; // Kiralanma tarihi
+        private Date rentalDate; 
 
         public Car(String id, String model, String brand, double price, String fuelType, Date rentalDate) {
             this.id = id;
@@ -86,10 +86,10 @@ public class CarRentalAdminPanel {
     }
 
     private static void openAddCarDialog(JFrame parentFrame) {
-        // Dialog for adding a new car
+        
         JDialog dialog = new JDialog(parentFrame, "Add New Car", true);
         dialog.setSize(400, 400);
-        dialog.setLayout(new GridLayout(7, 2)); // 7 satır ve 2 sütun olacak
+        dialog.setLayout(new GridLayout(7, 2)); 
 
 
         JTextField idField = new JTextField();
@@ -97,7 +97,7 @@ public class CarRentalAdminPanel {
         JTextField brandField = new JTextField();
         JTextField priceField = new JTextField();
         JTextField fuelTypeField = new JTextField();
-        JTextField rentalDateField = new JTextField(); // Kiralanma tarihi için JTextField
+        JTextField rentalDateField = new JTextField(); 
 
 
         dialog.add(new JLabel("Car ID:"));

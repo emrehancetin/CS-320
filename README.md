@@ -232,7 +232,3 @@ To clean up the database, use the `clean.py` script:
 ```bash
 python clean.py
 ```
-
----
-
-Let me know if you need further refinements!

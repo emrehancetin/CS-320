@@ -14,5 +14,3 @@ public class LoginScreen extends JFrame {
         setLocationRelativeTo(null);
     }
 }
-
-

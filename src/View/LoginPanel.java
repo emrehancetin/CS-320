@@ -9,7 +9,10 @@ import Controller.LoginController;
 public class LoginPanel extends JPanel {
 
     private Image backgroundImage;
-    public LoginPanel(){
+    private JFrame parentFrame;
+
+    public LoginPanel(JFrame frame){
+        this.parentFrame = frame;
 
         backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("resources/carwallpaper.png")).getImage();
 
@@ -75,6 +78,8 @@ public class LoginPanel extends JPanel {
     }
 
     public void buttonClicked(String username, String password){
-        LoginController.trylogin(username, password);
+        if (LoginController.trylogin(username, password)) {
+            parentFrame.dispose();
+        }
     }
 }

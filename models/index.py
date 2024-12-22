@@ -2,6 +2,13 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from database import Base
 
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)
+    rentings = relationship("Renting", back_populates="user")
+
 class Brand(Base):
     __tablename__ = "brands"
     id = Column(Integer, primary_key=True, index=True)
@@ -34,10 +41,14 @@ class RentingCar(Base):
     name = Column(String)
     is_ready = Column(Boolean, default=True)
     color = Column(String)
+    renting = relationship("Renting", back_populates="renting_car")
 
 class Renting(Base):
     __tablename__ = "rentings"
     id = Column(Integer, primary_key=True, index=True)
-    car_id = Column(Integer, ForeignKey("cars.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
+    renting_car_id = Column(Integer, ForeignKey("renting_cars.id"))
     starting_time = Column(DateTime)
     finish_time = Column(DateTime)
+    user = relationship("User", back_populates="rentings")
+    renting_car = relationship("RentingCar", back_populates="renting")

@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from routers import router  # Single router file
+
+from routers.index import router
 from middleware import error_handling_middleware
 from database import Base, engine
 

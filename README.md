@@ -1,147 +1,164 @@
-# Renting Car Application API
+# Car Rental API
 
-This is a **FastAPI-based** backend application for managing a car renting service. The API provides endpoints for managing brands, models, cars, fuels, renting cars, and rentings. It uses **PostgreSQL** as the database and supports JSON-based request/response.
+## Overview
+
+This project is a **Car Rental API** built with FastAPI. It provides endpoints for managing users, brands, models, cars, fuels, renting cars, and rentings. The API follows a modular structure, organizing routes into categories for better maintainability.
 
 ---
 
 ## Features
 
-- **Brand Management**: Create and retrieve car brands.
-- **Model Management**: Associate models with brands.
-- **Car Management**: Create and retrieve cars with details like brand, model, and fuel type.
-- **Fuel Management**: Manage fuel types for cars.
-- **Renting Cars**: Manage cars available for renting.
-- **Renting**: Handle car renting operations, including creation and cancellation.
+- User authentication (registration and login)
+- Management of cars, brands, models, fuels, and renting operations
+- Easy-to-extend modular structure
+- Fully RESTful API with CRUD operations for each resource
+- Clean and reusable code with Pydantic for schema validation
+- Middleware for global request handling
 
 ---
 
-## Technology Stack
+## Folder Structure
 
-- **Framework**: FastAPI
-- **Database**: PostgreSQL
-- **ORM**: SQLAlchemy
-- **Testing**: HTTPX
-- **Language**: Python 3.9+
-
----
-
-## Installation and Setup
-
-### **1. Clone the Repository**
-
-```bash
-git clone https://github.com/your-repository-name/renting-car-api.git
-cd renting-car-api
 ```
-
-### **2. Set Up a Virtual Environment**
-
-```bash
-python -m venv venv
+.
+├── models          # SQLAlchemy database models
+│   ├── __init__.py # Initializes models package
+│   ├── index.py    # Defines all database models
+├── routers         # API routes
+│   ├── __init__.py # Initializes routers package
+│   ├── auth.py     # User authentication routes
+│   ├── brand.py    # Brand-related routes
+│   ├── car.py      # Car-related routes
+│   ├── fuel.py     # Fuel-related routes
+│   ├── model.py    # Model-related routes
+│   ├── renting.py  # Renting-related routes
+│   ├── renting_car.py # Renting Car-related routes
+│   ├── index.py    # Combines all routes into a single router
+├── schemas         # Pydantic models for request/response validation
+│   ├── __init__.py # Initializes schemas package
+│   ├── index.py    # Defines all schemas
+├── main.py         # Main application entry point
+├── middleware.py   # Middleware for request/response handling
+├── clean.py        # Script for cleaning up the database
+├── test.py         # Test file for verifying API endpoints
+├── database.py     # Database setup with SQLAlchemy
+├── requirements.txt # Python dependencies
+├── README.md       # Project documentation
 ```
-
-Activate the virtual environment:
-
-- **On Linux/macOS**:
-  ```bash
-  source venv/bin/activate
-  ```
-
-- **On Windows**:
-  ```bash
-  venv\Scripts\activate
-  ```
-
-### **3. Install Dependencies**
-
-Install the required packages from `requirements.txt`:
-
-```bash
-pip install -r requirements.txt
-```
-
-### **4. Set Up the Database**
-
-1. Start your PostgreSQL server.
-2. Create a database for the project:
-   ```sql
-   CREATE DATABASE renting_car_db;
-   ```
-3. Update the `DATABASE_URL` in `database.py` or `.env`:
-   ```text
-   DATABASE_URL=postgresql+psycopg2://username:password@localhost:5432/renting_car_db
-   ```
-
-### **5. Run Database Migrations**
-
-Use the following command to create tables:
-```bash
-python main.py
-```
-
-### **6. Start the Server**
-
-Run the FastAPI server using Uvicorn:
-```bash
-uvicorn main:app --reload
-```
-
-Access the API at:
-- **Docs**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- **Redoc**: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
 
 ---
 
 ## API Endpoints
 
-### **Brand Endpoints**
-| Method | Endpoint      | Description          |
-|--------|---------------|----------------------|
-| POST   | `/brands/`    | Create a new brand   |
-| GET    | `/brands/`    | Retrieve all brands  |
+### **Authentication (`/auth`)**
+Handles user registration, login, and retrieval.
 
-### **Model Endpoints**
-| Method | Endpoint      | Description           |
-|--------|---------------|-----------------------|
-| POST   | `/models/`    | Create a new model    |
-| GET    | `/models/`    | Retrieve all models   |
-
-### **Fuel Endpoints**
-| Method | Endpoint      | Description           |
-|--------|---------------|-----------------------|
-| POST   | `/fuels/`     | Create a new fuel     |
-| GET    | `/fuels/`     | Retrieve all fuels    |
-
-### **Car Endpoints**
-| Method | Endpoint      | Description           |
-|--------|---------------|-----------------------|
-| POST   | `/cars/`      | Create a new car      |
-| GET    | `/cars/`      | Retrieve all cars     |
-
-### **Renting Car Endpoints**
-| Method | Endpoint                 | Description               |
-|--------|--------------------------|---------------------------|
-| POST   | `/renting_cars/`         | Create a new renting car  |
-| PUT    | `/renting_cars/{id}`     | Update a renting car      |
-
-### **Renting Endpoints**
-| Method | Endpoint                 | Description               |
-|--------|--------------------------|---------------------------|
-| POST   | `/rentings/`             | Create a new renting      |
-| DELETE | `/rentings/{id}`         | Cancel a renting          |
+| Method | Endpoint         | Parameters                                  | Response Format                                      |
+|--------|------------------|---------------------------------------------|-----------------------------------------------------|
+| `GET`  | `/auth/`         | None                                        | `[{"id": int, "username": str}]`                    |
+| `POST` | `/auth/register/`| `{"username": str, "password": str}`        | `{"id": int, "username": str}`                      |
+| `POST` | `/auth/login/`   | `{"username": str, "password": str}`        | `{"message": "Login successful"}`                  |
+| `DELETE`| `/auth/{id}`    | None                                        | `204 No Content`                                    |
 
 ---
 
-## Running Tests
+### **Brands (`/brands`)**
+Manages car brands.
 
-### **Pre-requisites**
-Ensure the server is running before executing tests:
+| Method | Endpoint         | Parameters                                  | Response Format                                      |
+|--------|------------------|---------------------------------------------|-----------------------------------------------------|
+| `GET`  | `/brands/`       | None                                        | `[{"id": int, "name": str}]`                        |
+| `POST` | `/brands/`       | `{"name": str}`                             | `{"id": int, "name": str}`                          |
+| `DELETE`| `/brands/{id}`  | None                                        | `204 No Content`                                    |
+
+---
+
+### **Models (`/models`)**
+Manages car models.
+
+| Method | Endpoint         | Parameters                                  | Response Format                                      |
+|--------|------------------|---------------------------------------------|-----------------------------------------------------|
+| `GET`  | `/models/`       | None                                        | `[{"id": int, "brand_id": int, "name": str}]`       |
+| `POST` | `/models/`       | `{"brand_id": int, "name": str}`            | `{"id": int, "brand_id": int, "name": str}`         |
+| `DELETE`| `/models/{id}`  | None                                        | `204 No Content`                                    |
+
+---
+
+### **Fuels (`/fuels`)**
+Manages fuel types for cars.
+
+| Method | Endpoint         | Parameters                                  | Response Format                                      |
+|--------|------------------|---------------------------------------------|-----------------------------------------------------|
+| `GET`  | `/fuels/`        | None                                        | `[{"id": int, "name": str}]`                        |
+| `POST` | `/fuels/`        | `{"name": str}`                             | `{"id": int, "name": str}`                          |
+| `DELETE`| `/fuels/{id}`   | None                                        | `204 No Content`                                    |
+
+---
+
+### **Cars (`/cars`)**
+Manages car details.
+
+| Method | Endpoint         | Parameters                                  | Response Format                                      |
+|--------|------------------|---------------------------------------------|-----------------------------------------------------|
+| `GET`  | `/cars/`         | None                                        | `[{"id": int, "brand_id": int, "model_id": int, "year": int, "fuel_id": int}]` |
+| `POST` | `/cars/`         | `{"brand_id": int, "model_id": int, "year": int, "fuel_id": int}` | `{"id": int, "brand_id": int, "model_id": int, "year": int, "fuel_id": int}` |
+| `DELETE`| `/cars/{id}`    | None                                        | `204 No Content`                                    |
+
+---
+
+### **Renting Cars (`/renting_cars`)**
+Manages cars available for renting.
+
+| Method | Endpoint          | Parameters                                  | Response Format                                      |
+|--------|-------------------|---------------------------------------------|-----------------------------------------------------|
+| `GET`  | `/renting_cars/`  | None                                        | `[{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}]` |
+| `POST` | `/renting_cars/`  | `{"car_id": int, "name": str, "is_ready": bool, "color": str}` | `{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}` |
+| `PUT`  | `/renting_cars/{id}`| `{"name": str, "is_ready": bool, "color": str}` | `{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}` |
+| `DELETE`| `/renting_cars/{id}`| None                                      | `204 No Content`                                    |
+
+---
+
+### **Rentings (`/rentings`)**
+Manages renting operations.
+
+| Method | Endpoint         | Parameters                                  | Response Format                                      |
+|--------|------------------|---------------------------------------------|-----------------------------------------------------|
+| `GET`  | `/rentings/`     | None                                        | `[{"id": int, "user_id": int, "renting_car_id": int, "starting_time": str, "finish_time": str}]` |
+| `POST` | `/rentings/`     | `{"user_id": int, "renting_car_id": int, "starting_time": str, "finish_time": str}` | `{"id": int, "user_id": int, "renting_car_id": int, "starting_time": str, "finish_time": str}` |
+| `DELETE`| `/rentings/{id}`| None                                        | `204 No Content`                                    |
+
+---
+
+## Running the Project
+
+1. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Run the Server**:
+   ```bash
+   uvicorn main:app --reload
+   ```
+
+3. **Access API Documentation**:
+   - Swagger UI: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+   - ReDoc: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+
+---
+
+## Testing
+
+Run tests using `pytest`:
 ```bash
-uvicorn main:app --reload
+pytest test.py
 ```
 
-### **Run Tests**
-Execute the test file to validate all endpoints:
+---
+
+## Cleanup Database
+
+To clean up the database, use the `clean.py` script:
 ```bash
-python test_api.py
+python clean.py
 ```

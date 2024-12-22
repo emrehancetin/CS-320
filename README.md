@@ -50,6 +50,82 @@ This project is a **Car Rental API** built with FastAPI. It provides endpoints f
 
 ---
 
+## Database Connection
+
+The API uses PostgreSQL as the database and SQLAlchemy as the ORM. The database connection is configured in the `database.py` file using the following components:
+
+- **Connection String**: `postgresql+psycopg2://<username>:<password>@<host>/<database_name>`
+- **SQLAlchemy Engine**: Manages connections to the database.
+- **Session Management**: A database session is created for each request and closed automatically using a dependency (`get_db` function).
+
+Make sure PostgreSQL is running locally or remotely, and adjust the connection details in `database.py` to match your environment.
+
+---
+
+## Database Models (`models.py`)
+
+The database models are defined using SQLAlchemy. Below is an overview of the models:
+
+### `User` Model
+- **Fields**: `id`, `username`, `password`
+- **Relationships**: 
+  - `rentings`: A user can have multiple rentings.
+
+### `Brand` Model
+- **Fields**: `id`, `name`
+
+### `Model` Model
+- **Fields**: `id`, `brand_id`, `name`
+- **Relationships**:
+  - `brand`: Links the model to a brand.
+
+### `Car` Model
+- **Fields**: `id`, `brand_id`, `model_id`, `year`, `fuel_id`
+- **Relationships**:
+  - Links to `Model` and `Fuel`.
+
+### `Fuel` Model
+- **Fields**: `id`, `name`
+
+### `RentingCar` Model
+- **Fields**: `id`, `car_id`, `name`, `is_ready`, `color`
+- **Relationships**:
+  - Links to `Car`.
+
+### `Renting` Model
+- **Fields**: `id`, `user_id`, `renting_car_id`, `starting_time`, `finish_time`
+- **Relationships**:
+  - Links to `User` and `RentingCar`.
+
+---
+
+## Schemas (`schemas.py`)
+
+The Pydantic schemas ensure request and response validation. Below is an overview of the schemas:
+
+### `UserSchema`
+- **Fields**: `id`, `username`, `password` (optional for responses).
+
+### `BrandSchema`
+- **Fields**: `id`, `name`.
+
+### `ModelSchema`
+- **Fields**: `id`, `brand_id`, `name`.
+
+### `FuelSchema`
+- **Fields**: `id`, `name`.
+
+### `CarSchema`
+- **Fields**: `id`, `brand_id`, `model_id`, `year`, `fuel_id`.
+
+### `RentingCarSchema`
+- **Fields**: `id`, `car_id`, `name`, `is_ready`, `color`.
+
+### `RentingSchema`
+- **Fields**: `id`, `user_id`, `renting_car_id`, `starting_time`, `finish_time`.
+
+---
+
 ## API Endpoints
 
 ### **Authentication (`/auth`)**

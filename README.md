@@ -193,9 +193,22 @@ Manages cars available for renting.
 | Method | Endpoint                   | Parameters                                  | Response Format                                      |
 |--------|----------------------------|---------------------------------------------|-----------------------------------------------------|
 | `GET`  | `/renting_cars/`           | `year, brand_id, model_id, fuel_id`         | `[{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}]` |
+| `GET`  | `/renting_cars/available` | `start_time` (required), `finish_time` (required), `brand_id` (optional), `model_id` (optional), `year` (optional), `fuel_id` (optional) | `[{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}]` |
 | `POST` | `/renting_cars/`           | `{"car_id": int, "name": str, "is_ready": bool, "color": str}` | `{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}` |
 | `PUT`  | `/renting_cars/{id}`       | `{"name": str, "is_ready": bool, "color": str}` | `{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}` |
 | `DELETE`| `/renting_cars/{id}`      | None                                        | `204 No Content`                                    |
+
+---
+
+## Rentings (`/rentings/`)
+
+Manage renting operations including creation, retrieval, and deletion.
+
+| Method | Endpoint                  | Parameters                                  | Response Format                                      |
+|--------|---------------------------|---------------------------------------------|-----------------------------------------------------|
+| `POST` | `/rentings/`              | `{"user_id": int, "renting_car_id": int, "starting_time": str, "finish_time": str}` | `{"id": int, "user_id": int, "renting_car_id": int, "starting_time": str, "finish_time": str}` |
+| `GET`  | `/rentings/`              | `user_id` (optional)                        | `[{"id": int, "user_id": int, "renting_car_id": int, "starting_time": str, "finish_time": str}]` |
+| `DELETE`| `/rentings/{id}`         | None                                        | `204 No Content`                                    |
 
 ---
 

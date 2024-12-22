@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from schemas.index import RentingCarSchema, CarSchema
-from models.index import RentingCar, Car
+from schemas.index import RentingCarSchema
+from models.index import RentingCar, Car, Renting
 from database import get_db
 from typing import List, Optional
+from datetime import datetime
 
 router = APIRouter(tags=["Renting Cars"])
 
@@ -28,6 +29,42 @@ def get_renting_cars(
 
     renting_cars = query.all()
     return renting_cars
+
+@router.get("/available", response_model=List[RentingCarSchema])
+def get_available_renting_cars(
+    start_time: datetime,
+    finish_time: datetime,
+    brand_id: Optional[int] = None,
+    model_id: Optional[int] = None,
+    year: Optional[int] = None,
+    fuel_id: Optional[int] = None,
+    db: Session = Depends(get_db),
+):
+    query = db.query(RentingCar).join(Car).outerjoin(Renting)
+
+    # Apply filters for car attributes
+    if brand_id is not None:
+        query = query.filter(Car.brand_id == brand_id)
+    if model_id is not None:
+        query = query.filter(Car.model_id == model_id)
+    if year is not None:
+        query = query.filter(Car.year == year)
+    if fuel_id is not None:
+        query = query.filter(Car.fuel_id == fuel_id)
+
+    # Ensure the renting car is available in the specified time range
+    query = query.filter(
+        RentingCar.is_ready == True,
+        ~(
+            (Renting.starting_time < finish_time)
+            & (Renting.finish_time > start_time)
+        )
+    )
+
+    available_renting_cars = query.all()
+    if not available_renting_cars:
+        raise HTTPException(status_code=404, detail="No available renting cars found")
+    return available_renting_cars
 
 @router.post("/", response_model=RentingCarSchema)
 def create_renting_car(renting_car: RentingCarSchema, db: Session = Depends(get_db)):

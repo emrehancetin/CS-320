@@ -1,3 +1,4 @@
+
 # Car Rental API
 
 ## Overview
@@ -10,6 +11,7 @@ This project is a **Car Rental API** built with FastAPI. It provides endpoints f
 
 - User authentication (registration and login)
 - Management of cars, brands, models, fuels, and renting operations
+- Flexible querying with connected `AND` logic for filters
 - Easy-to-extend modular structure
 - Fully RESTful API with CRUD operations for each resource
 - Clean and reusable code with Pydantic for schema validation
@@ -76,56 +78,48 @@ Manages car brands.
 ### **Models (`/models`)**
 Manages car models.
 
-| Method | Endpoint         | Parameters                                  | Response Format                                      |
-|--------|------------------|---------------------------------------------|-----------------------------------------------------|
-| `GET`  | `/models/`       | None                                        | `[{"id": int, "brand_id": int, "name": str}]`       |
-| `POST` | `/models/`       | `{"brand_id": int, "name": str}`            | `{"id": int, "brand_id": int, "name": str}`         |
-| `DELETE`| `/models/{id}`  | None                                        | `204 No Content`                                    |
+| Method | Endpoint                   | Parameters                                  | Response Format                                      |
+|--------|----------------------------|---------------------------------------------|-----------------------------------------------------|
+| `GET`  | `/models/`                 | None                                        | `[{"id": int, "brand_id": int, "name": str}]`       |
+| `GET`  | `/models/{brand_id}`       | None                                        | `[{"id": int, "brand_id": int, "name": str}]`       |
+| `POST` | `/models/`                 | `{"brand_id": int, "name": str}`            | `{"id": int, "brand_id": int, "name": str}`         |
+| `DELETE`| `/models/{id}`            | None                                        | `204 No Content`                                    |
 
 ---
 
 ### **Fuels (`/fuels`)**
 Manages fuel types for cars.
 
-| Method | Endpoint         | Parameters                                  | Response Format                                      |
-|--------|------------------|---------------------------------------------|-----------------------------------------------------|
-| `GET`  | `/fuels/`        | None                                        | `[{"id": int, "name": str}]`                        |
-| `POST` | `/fuels/`        | `{"name": str}`                             | `{"id": int, "name": str}`                          |
-| `DELETE`| `/fuels/{id}`   | None                                        | `204 No Content`                                    |
+| Method | Endpoint                   | Parameters                                  | Response Format                                      |
+|--------|----------------------------|---------------------------------------------|-----------------------------------------------------|
+| `GET`  | `/fuels/`                  | None                                        | `[{"id": int, "name": str}]`                        |
+| `GET`  | `/fuels/{model_id}`        | None                                        | `[{"id": int, "name": str}]`                        |
+| `POST` | `/fuels/`                  | `{"name": str}`                             | `{"id": int, "name": str}`                          |
+| `DELETE`| `/fuels/{id}`             | None                                        | `204 No Content`                                    |
 
 ---
 
 ### **Cars (`/cars`)**
 Manages car details.
 
-| Method | Endpoint         | Parameters                                  | Response Format                                      |
-|--------|------------------|---------------------------------------------|-----------------------------------------------------|
-| `GET`  | `/cars/`         | None                                        | `[{"id": int, "brand_id": int, "model_id": int, "year": int, "fuel_id": int}]` |
-| `POST` | `/cars/`         | `{"brand_id": int, "model_id": int, "year": int, "fuel_id": int}` | `{"id": int, "brand_id": int, "model_id": int, "year": int, "fuel_id": int}` |
-| `DELETE`| `/cars/{id}`    | None                                        | `204 No Content`                                    |
+| Method | Endpoint                   | Parameters                                  | Response Format                                      |
+|--------|----------------------------|---------------------------------------------|-----------------------------------------------------|
+| `GET`  | `/cars/`                   | None                                        | `[{"id": int, "brand_id": int, "model_id": int, "year": int, "fuel_id": int}]` |
+| `GET`  | `/cars/one`                | `brand_id, model_id, fuel_id`              | `{"id": int, "brand_id": int, "model_id": int, "year": int, "fuel_id": int}` |
+| `POST` | `/cars/`                   | `{"brand_id": int, "model_id": int, "year": int, "fuel_id": int}` | `{"id": int, "brand_id": int, "model_id": int, "year": int, "fuel_id": int}` |
+| `DELETE`| `/cars/{id}`              | None                                        | `204 No Content`                                    |
 
 ---
 
 ### **Renting Cars (`/renting_cars`)**
 Manages cars available for renting.
 
-| Method | Endpoint          | Parameters                                  | Response Format                                      |
-|--------|-------------------|---------------------------------------------|-----------------------------------------------------|
-| `GET`  | `/renting_cars/`  | None                                        | `[{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}]` |
-| `POST` | `/renting_cars/`  | `{"car_id": int, "name": str, "is_ready": bool, "color": str}` | `{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}` |
-| `PUT`  | `/renting_cars/{id}`| `{"name": str, "is_ready": bool, "color": str}` | `{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}` |
-| `DELETE`| `/renting_cars/{id}`| None                                      | `204 No Content`                                    |
-
----
-
-### **Rentings (`/rentings`)**
-Manages renting operations.
-
-| Method | Endpoint         | Parameters                                  | Response Format                                      |
-|--------|------------------|---------------------------------------------|-----------------------------------------------------|
-| `GET`  | `/rentings/`     | None                                        | `[{"id": int, "user_id": int, "renting_car_id": int, "starting_time": str, "finish_time": str}]` |
-| `POST` | `/rentings/`     | `{"user_id": int, "renting_car_id": int, "starting_time": str, "finish_time": str}` | `{"id": int, "user_id": int, "renting_car_id": int, "starting_time": str, "finish_time": str}` |
-| `DELETE`| `/rentings/{id}`| None                                        | `204 No Content`                                    |
+| Method | Endpoint                   | Parameters                                  | Response Format                                      |
+|--------|----------------------------|---------------------------------------------|-----------------------------------------------------|
+| `GET`  | `/renting_cars/`           | `year, brand_id, model_id, fuel_id`         | `[{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}]` |
+| `POST` | `/renting_cars/`           | `{"car_id": int, "name": str, "is_ready": bool, "color": str}` | `{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}` |
+| `PUT`  | `/renting_cars/{id}`       | `{"name": str, "is_ready": bool, "color": str}` | `{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}` |
+| `DELETE`| `/renting_cars/{id}`      | None                                        | `204 No Content`                                    |
 
 ---
 
@@ -162,3 +156,7 @@ To clean up the database, use the `clean.py` script:
 ```bash
 python clean.py
 ```
+
+---
+
+Let me know if you need further refinements!

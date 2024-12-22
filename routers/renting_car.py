@@ -1,14 +1,33 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from schemas.index import RentingCarSchema
-from models.index import RentingCar
+from schemas.index import RentingCarSchema, CarSchema
+from models.index import RentingCar, Car
 from database import get_db
+from typing import List, Optional
 
 router = APIRouter(tags=["Renting Cars"])
 
-@router.get("/", response_model=list[RentingCarSchema])
-def get_renting_cars(db: Session = Depends(get_db)):
-    return db.query(RentingCar).all()
+@router.get("/", response_model=List[RentingCarSchema])
+def get_renting_cars(
+    year: Optional[int] = None,
+    brand_id: Optional[int] = None,
+    model_id: Optional[int] = None,
+    fuel_id: Optional[int] = None,
+    db: Session = Depends(get_db),
+):
+    query = db.query(RentingCar).join(Car)
+
+    if year is not None:
+        query = query.filter(Car.year == year)
+    if brand_id is not None:
+        query = query.filter(Car.brand_id == brand_id)
+    if model_id is not None:
+        query = query.filter(Car.model_id == model_id)
+    if fuel_id is not None:
+        query = query.filter(Car.fuel_id == fuel_id)
+
+    renting_cars = query.all()
+    return renting_cars
 
 @router.post("/", response_model=RentingCarSchema)
 def create_renting_car(renting_car: RentingCarSchema, db: Session = Depends(get_db)):

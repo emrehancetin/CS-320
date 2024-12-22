@@ -22,6 +22,10 @@ def get_models(brand_id: Optional[int] = None, db: Session = Depends(get_db)):
         query = query.filter(Model.brand_id == brand_id)
     return query.all()
 
+@router.get("/{brand_id}", response_model=List[ModelSchema])
+def get_models_by_brand(brand_id: int, db: Session = Depends(get_db)):
+    return db.query(Model).filter(Model.brand_id == brand_id).all()
+
 @router.delete("/{id}", status_code=204)
 def delete_model(id: int, db: Session = Depends(get_db)):
     db_model = db.query(Model).filter(Model.id == id).first()

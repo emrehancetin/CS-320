@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from schemas.index import FuelSchema
-from models.index import Fuel
+from schemas.index import FuelSchema, ModelSchema, CarSchema
+from models.index import Fuel, Model, Car
 from database import get_db
 from typing import List
 
@@ -19,6 +19,17 @@ def create_fuel(fuel: FuelSchema, db: Session = Depends(get_db)):
 @router.get("/", response_model=List[FuelSchema])
 def get_fuels(db: Session = Depends(get_db)):
     return db.query(Fuel).all()
+
+@router.get("/{model_id}", response_model=List[FuelSchema])
+def get_unique_fuels_by_model(model_id: int, db: Session = Depends(get_db)):
+    unique_fuels = (
+        db.query(Fuel)
+        .join(Car, Car.fuel_id == Fuel.id)
+        .filter(Car.model_id == model_id)
+        .distinct(Fuel.id)
+        .all()
+    )
+    return unique_fuels
 
 @router.delete("/{id}", status_code=204)
 def delete_fuel(id: int, db: Session = Depends(get_db)):

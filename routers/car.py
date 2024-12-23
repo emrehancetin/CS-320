@@ -16,14 +16,12 @@ def create_car(car: CarSchema, db: Session = Depends(get_db)):
     return db_car
 
 @router.get("/", response_model=List[CarSchema])
-def get_cars(brand_id: Optional[int] = None, model_id: Optional[int] = None, year: Optional[int] = None, fuel_id: Optional[int] = None, db: Session = Depends(get_db)):
+def get_cars(brand_id: Optional[int] = None, model_id: Optional[int] = None, fuel_id: Optional[int] = None, db: Session = Depends(get_db)):
     query = db.query(Car)
     if brand_id:
         query = query.filter(Car.brand_id == brand_id)
     if model_id:
         query = query.filter(Car.model_id == model_id)
-    if year:
-        query = query.filter(Car.year == year)
     if fuel_id:
         query = query.filter(Car.fuel_id == fuel_id)
     return query.all()

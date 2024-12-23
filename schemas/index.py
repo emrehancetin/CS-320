@@ -37,7 +37,6 @@ class CarSchema(BaseModel):
     id: Optional[int] = None
     brand_id: int
     model_id: int
-    year: int
     fuel_id: int
 
     model_config = ConfigDict(from_attributes=True, protected_namespaces=[])

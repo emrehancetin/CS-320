@@ -26,7 +26,6 @@ class Car(Base):
     id = Column(Integer, primary_key=True, index=True)
     brand_id = Column(Integer, ForeignKey("brands.id"))
     model_id = Column(Integer, ForeignKey("models.id"))
-    year = Column(Integer)
     fuel_id = Column(Integer, ForeignKey("fuels.id"))
 
 class Fuel(Base):

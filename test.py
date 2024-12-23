@@ -56,7 +56,7 @@ def test_workflow():
     model_id = model["id"]
 
     # Create Cars
-    car = create_item("/cars/", {"brand_id": brand_id, "model_id": model_id, "year": 2022, "fuel_id": fuel_id})
+    car = create_item("/cars/", {"brand_id": brand_id, "model_id": model_id, "fuel_id": fuel_id})
     car_id = car["id"]
 
     # Create Renting Cars

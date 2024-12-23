@@ -10,7 +10,6 @@ router = APIRouter(tags=["Renting Cars"])
 
 @router.get("/", response_model=List[RentingCarSchema])
 def get_renting_cars(
-    year: Optional[int] = None,
     brand_id: Optional[int] = None,
     model_id: Optional[int] = None,
     fuel_id: Optional[int] = None,
@@ -18,8 +17,6 @@ def get_renting_cars(
 ):
     query = db.query(RentingCar).join(Car)
 
-    if year is not None:
-        query = query.filter(Car.year == year)
     if brand_id is not None:
         query = query.filter(Car.brand_id == brand_id)
     if model_id is not None:
@@ -36,7 +33,6 @@ def get_available_renting_cars(
     finish_time: datetime,
     brand_id: Optional[int] = None,
     model_id: Optional[int] = None,
-    year: Optional[int] = None,
     fuel_id: Optional[int] = None,
     db: Session = Depends(get_db),
 ):
@@ -47,8 +43,6 @@ def get_available_renting_cars(
         query = query.filter(Car.brand_id == brand_id)
     if model_id is not None:
         query = query.filter(Car.model_id == model_id)
-    if year is not None:
-        query = query.filter(Car.year == year)
     if fuel_id is not None:
         query = query.filter(Car.fuel_id == fuel_id)
 

@@ -80,7 +80,7 @@ The database models are defined using SQLAlchemy. Below is an overview of the mo
   - `brand`: Links the model to a brand.
 
 ### `Car` Model
-- **Fields**: `id`, `brand_id`, `model_id`, `year`, `fuel_id`
+- **Fields**: `id`, `brand_id`, `model_id`, `fuel_id`
 - **Relationships**:
   - Links to `Model` and `Fuel`.
 
@@ -116,7 +116,7 @@ The Pydantic schemas ensure request and response validation. Below is an overvie
 - **Fields**: `id`, `name`.
 
 ### `CarSchema`
-- **Fields**: `id`, `brand_id`, `model_id`, `year`, `fuel_id`.
+- **Fields**: `id`, `brand_id`, `model_id`, `fuel_id`.
 
 ### `RentingCarSchema`
 - **Fields**: `id`, `car_id`, `name`, `is_ready`, `color`.
@@ -180,9 +180,9 @@ Manages car details.
 
 | Method | Endpoint                   | Parameters                                  | Response Format                                      |
 |--------|----------------------------|---------------------------------------------|-----------------------------------------------------|
-| `GET`  | `/cars/`                   | None                                        | `[{"id": int, "brand_id": int, "model_id": int, "year": int, "fuel_id": int}]` |
-| `GET`  | `/cars/one`                | `brand_id, model_id, fuel_id`              | `{"id": int, "brand_id": int, "model_id": int, "year": int, "fuel_id": int}` |
-| `POST` | `/cars/`                   | `{"brand_id": int, "model_id": int, "year": int, "fuel_id": int}` | `{"id": int, "brand_id": int, "model_id": int, "year": int, "fuel_id": int}` |
+| `GET`  | `/cars/`                   | None                                        | `[{"id": int, "brand_id": int, "model_id": int, "fuel_id": int}]` |
+| `GET`  | `/cars/one`                | `brand_id, model_id, fuel_id`              | `{"id": int, "brand_id": int, "model_id": int, "fuel_id": int}` |
+| `POST` | `/cars/`                   | `{"brand_id": int, "model_id": int, "fuel_id": int}` | `{"id": int, "brand_id": int, "model_id": int, "fuel_id": int}` |
 | `DELETE`| `/cars/{id}`              | None                                        | `204 No Content`                                    |
 
 ---
@@ -192,8 +192,8 @@ Manages cars available for renting.
 
 | Method | Endpoint                   | Parameters                                  | Response Format                                      |
 |--------|----------------------------|---------------------------------------------|-----------------------------------------------------|
-| `GET`  | `/renting_cars/`           | `year, brand_id, model_id, fuel_id`         | `[{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}]` |
-| `GET`  | `/renting_cars/available` | `start_time` (required), `finish_time` (required), `brand_id` (optional), `model_id` (optional), `year` (optional), `fuel_id` (optional) | `[{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}]` |
+| `GET`  | `/renting_cars/`           | `brand_id, model_id, fuel_id`         | `[{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}]` |
+| `GET`  | `/renting_cars/available` | `start_time` (required), `finish_time` (required), `brand_id` (optional), `model_id` (optional), `fuel_id` (optional) | `[{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}]` |
 | `POST` | `/renting_cars/`           | `{"car_id": int, "name": str, "is_ready": bool, "color": str}` | `{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}` |
 | `PUT`  | `/renting_cars/{id}`       | `{"name": str, "is_ready": bool, "color": str}` | `{"id": int, "car_id": int, "name": str, "is_ready": bool, "color": str}` |
 | `DELETE`| `/renting_cars/{id}`      | None                                        | `204 No Content`                                    |

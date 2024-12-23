@@ -34,4 +34,15 @@ public class RentingCars {
     public String getColor() {
         return color;
     }
+
+    @Override
+    public String toString() {
+        return "RentingCars{" +
+                "ID=" + ID +
+                ", carID=" + carID +
+                ", name='" + name + '\'' +
+                ", isReady=" + isReady +
+                ", color='" + color + '\'' +
+                '}';
+    }
 }

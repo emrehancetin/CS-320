@@ -200,8 +200,7 @@ Manages cars available for renting.
 
 ---
 
-## Rentings (`/rentings/`)
-
+### Rentings (`/rentings/`)**
 Manage renting operations including creation, retrieval, and deletion.
 
 | Method | Endpoint                  | Parameters                                  | Response Format                                      |
